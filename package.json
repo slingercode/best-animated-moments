@@ -1,0 +1,23 @@
+{
+  "name": "best-animated-moments",
+  "version": "0.1.0",
+  "description": "A personal database for the most hilarious moments of cartoons, anime, movies and videogames!",
+  "author": "Noel Espino Cordova <noelespinocordova@gmail.com>",
+  "license": "ISC",
+  "private": true,
+  "keywords": [
+    "react",
+    "nextjs"
+  ],
+  "scripts": {
+    "start": "next start",
+    "dev": "next dev -p 8080",
+    "build": "next build"
+  },
+  "dependencies": {
+    "axios": "^0.20.0",
+    "next": "9.3.5",
+    "react": "16.13.1",
+    "react-dom": "16.13.1"
+  }
+}
