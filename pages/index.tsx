@@ -1,41 +1,30 @@
-import React, { useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
 
-import Layout from '../components/layout';
+import Layout from '../components/Layout/Layout';
+import Moments from '../components/Moments/Moments';
 
-const Home: React.FC = () => {
-  useEffect(() => {
-    const request = async () => {
-      const response = await axios.get(`${process.env.API_URI}/ping`);
-      // eslint-disable-next-line no-console
-      console.log(response);
-    };
+const Home: React.FC = () => (
+  <Layout>
+    <h1>Best moments</h1>
+    <Moments />
 
-    request();
-  }, []);
+    <style jsx global>
+      {`
+        * {
+          box-sizing: border-box;
+        }
 
-  return (
-    <Layout>
-      <h1>Best moments</h1>
-
-      <style jsx global>
-        {`
-          * {
-            box-sizing: border-box;
-          }
-
-          html,
-          body {
-            padding: 0;
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-              Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-              sans-serif;
-          }
-        `}
-      </style>
-    </Layout>
-  );
-};
+        html,
+        body {
+          padding: 0;
+          margin: 0;
+          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+            sans-serif;
+        }
+      `}
+    </style>
+  </Layout>
+);
 
 export default Home;
