@@ -1,30 +1,55 @@
 import React from 'react';
 
 import Layout from '../components/Layout/Layout';
+import Login from '../components/Login/Login';
+import Logout from '../components/Logout/Logout';
 import Moments from '../components/Moments/Moments';
+import Unauthorized from '../components/Unauthorized/Unauthorized';
 
-const Home: React.FC = () => (
-  <Layout>
-    <h1>Best moments</h1>
-    <Moments />
+import AuthContext, { useAuth } from '../auth';
 
-    <style jsx global>
-      {`
-        * {
-          box-sizing: border-box;
-        }
+const Home = () => {
+  const {
+    user,
+    session,
+    login,
+    logout,
+  } = useAuth();
 
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
-        }
-      `}
-    </style>
-  </Layout>
-);
+  return (
+    <>
+      <AuthContext.Provider value={{
+        user,
+        session,
+        login,
+        logout,
+      }}
+      >
+        {!session ? <Login /> : <Logout />}
+
+        <Layout>
+          {session ? <Moments /> : <Unauthorized />}
+        </Layout>
+      </AuthContext.Provider>
+
+      <style jsx global>
+        {`
+          * {
+            box-sizing: border-box;
+          }
+  
+          html,
+          body {
+            padding: 0;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+              Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+              sans-serif;
+          }
+        `}
+      </style>
+    </>
+  );
+};
 
 export default Home;
