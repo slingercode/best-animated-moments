@@ -1,11 +1,13 @@
+import React from 'react';
+
 import Layout from '../components/layout';
 
-const Home = () => {
-  return (
-    <Layout>
-      <h1>404 - Not found</h1>
+const Home: React.FC = () => (
+  <Layout>
+    <h1>404 - Not found</h1>
 
-      <style jsx global>{`
+    <style jsx global>
+      {`
         * {
           box-sizing: border-box;
         }
@@ -18,9 +20,9 @@ const Home = () => {
             Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
             sans-serif;
         }
-      `}</style>
-    </Layout>
-  );
-}
+      `}
+    </style>
+  </Layout>
+);
 
 export default Home;
