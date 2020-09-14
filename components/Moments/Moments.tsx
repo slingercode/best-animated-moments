@@ -1,7 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
-import MomentCard from '../MomentCard/MomentCard';
+import MomentsList from '../MomentsList/MomentsList';
+
+import { Title } from '../GenericComponets';
 
 import AuthContext from '../../auth';
 
@@ -11,36 +13,89 @@ import styles from './Moments.module.css';
 
 const Moments = () => {
   const { session, user } = useContext(AuthContext);
-  const [moments, setMoments] = useState<Moment[]>([]);
+  const [moments, setMoments] = useState<Moment[]>([
+    {
+      _id: '5f55849eedf2420f61b4dd25',
+      moment: 'Yo Baka',
+      from: 'Naruto',
+      when: '497',
+      timestamp: '20:09',
+      created: '2020-09-06T05:00:00.000Z',
+      labels: [
+        'anime',
+      ],
+    },
+    {
+      _id: '5f55849eedf2420f61b4dd253',
+      moment: 'Yo Baka',
+      from: 'Naruto',
+      when: '497',
+      timestamp: '20:09',
+      created: '2020-09-06T05:00:00.000Z',
+      labels: [
+        'anime',
+      ],
+    },
+    {
+      _id: '5f55849eedf2420f61b4dd25523',
+      moment: 'Yo Baka',
+      from: 'Naruto',
+      when: '497',
+      timestamp: '20:09',
+      created: '2020-09-06T05:00:00.000Z',
+      labels: [
+        'anime',
+      ],
+    },
+    {
+      _id: '5f55849eedf2420f61b4dd25dafs',
+      moment: 'Yo Baka',
+      from: 'Naruto',
+      when: '497',
+      timestamp: '20:09',
+      created: '2020-09-06T05:00:00.000Z',
+      labels: [
+        'anime',
+      ],
+    },
+  ]);
 
-  useEffect(() => {
-    const getMoments = async () => {
-      try {
-        const { data } = await axios.get(`${process.env.API_URI}/moments`, {
-          auth: {
-            username: user.username,
-            password: user.password,
-          },
-        });
+  // useEffect(() => {
+  //   const getMoments = async () => {
+  //     try {
+  //       const { data } = await axios.get(`${process.env.API_URI}/moments`, {
+  //         auth: {
+  //           username: user.username,
+  //           password: user.password,
+  //         },
+  //       });
 
-        setMoments(data.moments);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error);
-      }
-    };
+  //       setMoments(data.moments);
+  //     } catch (error) {
+  //       // eslint-disable-next-line no-console
+  //       console.error(error);
+  //     }
+  //   };
 
-    if (session) {
-      getMoments();
-    }
-  }, [session, user]);
+  //   if (session) {
+  //     getMoments();
+  //   }
+  // }, [session, user]);
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Best animated moments</h1>
+    <>
+      <Title textAlign="center">Best animated moments</Title>
 
-      {moments.map((moment) => <MomentCard key={moment._id} moment={moment} />)}
-    </div>
+      <div className={styles.container}>
+        <div className={styles.moments}>
+          <MomentsList moments={moments} />
+        </div>
+
+        <div className={styles.filters}>
+          Filtros
+        </div>
+      </div>
+    </>
   );
 };
 

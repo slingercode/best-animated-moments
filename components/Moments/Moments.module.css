@@ -1,8 +1,21 @@
 .container {
   display: flex;
-  flex-direction: column;
+  flex: 1;
+  margin-top: 10px;
+  background-color: red;
 }
 
-.title {
-  text-align: center;
+.moments {
+  display: flex;
+  flex: 2;
+  flex-direction: column;
+  padding: 20;
+  background-color: yellow;
+  height: 80vh;
+}
+
+.filters {
+  display: flex;
+  flex: 1;
+  background-color: greenyellow; 
 }

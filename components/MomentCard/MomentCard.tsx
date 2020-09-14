@@ -1,26 +1,34 @@
 import React from 'react';
 
-import { Moment } from '../../models';
+import { Card } from '@material-ui/core';
 
-import styles from './MomentCard.module.css';
+import { Title, Subtitle } from '../GenericComponets';
+
+import { Moment } from '../../models';
 
 interface Props {
   moment: Moment;
+  isFirstElement: boolean;
 }
 
-const MomentCard = ({ moment }: Props) => (
-  <div className={styles.container}>
-    <h1>{moment.moment}</h1>
-    <h2>
+const MomentCard = ({ moment, isFirstElement }: Props) => (
+  <Card
+    style={{
+      marginTop: isFirstElement ? 40 : 0,
+      backgroundColor: 'cyan',
+    }}
+  >
+    <Title>{moment.moment}</Title>
+    <Subtitle>
       {moment.from}
       -
       {moment.when}
       , at -
       {moment.timestamp}
-    </h2>
+    </Subtitle>
     <h3>{moment.created}</h3>
     <h4>{moment.labels[0]}</h4>
-  </div>
+  </Card>
 );
 
 export default MomentCard;
