@@ -27,7 +27,8 @@ const MomentCard = ({ moment, isFirstElement }: Props) => (
       {moment.timestamp}
     </Subtitle>
     <h3>{moment.created}</h3>
-    <h4>{moment.labels[0]}</h4>
+
+    {moment.labels.map((label) => <h4>{label}</h4>)}
   </Card>
 );
 

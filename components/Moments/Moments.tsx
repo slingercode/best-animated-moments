@@ -2,12 +2,13 @@ import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 import MomentsList from '../MomentsList/MomentsList';
+import Filters from '../MomentsFilters/MomentsFilters';
 
 import { Title } from '../GenericComponets';
 
 import AuthContext from '../../auth';
 
-import { Moment } from '../../models';
+import { Label, Moment } from '../../models';
 
 import styles from './Moments.module.css';
 
@@ -34,6 +35,7 @@ const Moments = () => {
       created: '2020-09-06T05:00:00.000Z',
       labels: [
         'anime',
+        'irl'
       ],
     },
     {
@@ -44,7 +46,7 @@ const Moments = () => {
       timestamp: '20:09',
       created: '2020-09-06T05:00:00.000Z',
       labels: [
-        'anime',
+        'irl',
       ],
     },
     {
@@ -59,6 +61,19 @@ const Moments = () => {
       ],
     },
   ]);
+  const [labels, setLabels] = useState<Label[]>([
+    {
+      label: 'Anime',
+      value: 'anime',
+    },
+    {
+      label: 'IRL',
+      value: 'irl',
+    },
+  ]);
+  const [filters, setFilters] = useState({
+    label: '',
+  });
 
   // useEffect(() => {
   //   const getMoments = async () => {
@@ -82,6 +97,16 @@ const Moments = () => {
   //   }
   // }, [session, user]);
 
+  useEffect(() => {
+    if (filters.label !== '') {
+      const momentsFiltered = moments.filter(
+        ({ labels: fL }) => fL.some((label) => label === filters.label),
+      );
+
+      setMoments(momentsFiltered);
+    }
+  }, [filters]);
+
   return (
     <>
       <Title textAlign="center">Best animated moments</Title>
@@ -92,7 +117,11 @@ const Moments = () => {
         </div>
 
         <div className={styles.filters}>
-          Filtros
+          <Filters
+            labels={labels}
+            activeFilters={filters}
+            setActiveFilters={setFilters}
+          />
         </div>
       </div>
     </>

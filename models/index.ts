@@ -12,3 +12,8 @@ export interface Moment {
   timestamp: string
   when: string
 }
+
+export interface Label {
+  value: string;
+  label: string;
+}
