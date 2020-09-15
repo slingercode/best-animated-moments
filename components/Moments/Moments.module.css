@@ -17,5 +17,6 @@
 .filters {
   display: flex;
   flex: 1;
-  background-color: greenyellow; 
+  background-color: greenyellow;
+  padding: 20px;
 }
