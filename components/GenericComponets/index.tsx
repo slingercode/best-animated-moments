@@ -47,3 +47,26 @@ Subtitle.defaultProps = {
   textAlign: 'start',
   color: 'black',
 };
+
+interface CaptionProps {
+  children: ReactNode;
+  textAlign?: 'start' | 'end' | 'left' | 'right' | 'center' | 'justify' | 'match-parent';
+  color?: string;
+}
+
+export const Caption = ({ children, textAlign, color }: CaptionProps) => (
+  <p
+    style={{
+      margin: 0,
+      textAlign,
+      color,
+    }}
+  >
+    {children}
+  </p>
+);
+
+Caption.defaultProps = {
+  textAlign: 'center',
+  color: 'black',
+};

@@ -15,7 +15,7 @@ const MomentCard = ({ moment, isFirstElement }: Props) => (
   <Card
     style={{
       marginTop: isFirstElement ? 40 : 0,
-      backgroundColor: 'cyan',
+      backgroundColor: '#eee',
     }}
   >
     <Title>{moment.moment}</Title>
@@ -28,7 +28,7 @@ const MomentCard = ({ moment, isFirstElement }: Props) => (
     </Subtitle>
     <h3>{moment.created}</h3>
 
-    {moment.labels.map((label) => <h4>{label}</h4>)}
+    {moment.labels.map((label) => <h4 key={label}>{label}</h4>)}
   </Card>
 );
 

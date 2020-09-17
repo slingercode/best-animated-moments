@@ -14,6 +14,7 @@ export interface Moment {
 }
 
 export interface Label {
+  _id: string;
   value: string;
   label: string;
 }

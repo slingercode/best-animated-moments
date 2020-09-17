@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormControl, InputLabel, Select } from '@material-ui/core';
+import { Checkbox, FormControlLabel } from '@material-ui/core';
 
 import { Subtitle } from '../GenericComponets';
 
@@ -9,17 +9,13 @@ import { Label } from '../../models';
 
 interface Props {
   labels: Label[];
-  activeFilters: {
-    label: string;
-  };
-  setActiveFilters: React.Dispatch<React.SetStateAction<{
-    label: string;
-  }>>;
+  activeFilters: Object;
+  setActiveFilters: React.Dispatch<React.SetStateAction<Object>>;
 }
 
 const Filters = ({ labels, activeFilters, setActiveFilters }: Props) => {
-  const handleChange = ({ target }: React.ChangeEvent<HTMLSelectElement>) => {
-    setActiveFilters({ label: target.value });
+  const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    setActiveFilters({ ...activeFilters, [target.name]: target.checked });
   };
 
   return (
@@ -27,24 +23,13 @@ const Filters = ({ labels, activeFilters, setActiveFilters }: Props) => {
       <Subtitle textAlign="center">Filters</Subtitle>
 
       <div className={styles.filters}>
-        <FormControl variant="outlined">
-          <InputLabel htmlFor="category-select">Category</InputLabel>
-          <Select
-            native
-            label="Category"
-            value={activeFilters.label}
-            onChange={handleChange}
-            inputProps={{
-              name: 'category',
-              id: 'category-select',
-            }}
-          >
-            <option aria-label="None" value="" />
-            {labels.map((label) => (
-              <option key={label.value} value={label.value}>{label.label}</option>
-            ))}
-          </Select>
-        </FormControl>
+        {labels.map((label) => (
+          <FormControlLabel
+            key={label.label}
+            control={<Checkbox name={label.value} onChange={handleChange} />}
+            label={label.label}
+          />
+        ))}
       </div>
     </div>
   );

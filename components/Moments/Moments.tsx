@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { CircularProgress } from '@material-ui/core';
 
 import MomentsList from '../MomentsList/MomentsList';
 import Filters from '../MomentsFilters/MomentsFilters';
@@ -14,96 +15,78 @@ import styles from './Moments.module.css';
 
 const Moments = () => {
   const { session, user } = useContext(AuthContext);
-  const [moments, setMoments] = useState<Moment[]>([
-    {
-      _id: '5f55849eedf2420f61b4dd25',
-      moment: 'Yo Baka',
-      from: 'Naruto',
-      when: '497',
-      timestamp: '20:09',
-      created: '2020-09-06T05:00:00.000Z',
-      labels: [
-        'anime',
-      ],
-    },
-    {
-      _id: '5f55849eedf2420f61b4dd253',
-      moment: 'Yo Baka',
-      from: 'Naruto',
-      when: '497',
-      timestamp: '20:09',
-      created: '2020-09-06T05:00:00.000Z',
-      labels: [
-        'anime',
-        'irl'
-      ],
-    },
-    {
-      _id: '5f55849eedf2420f61b4dd25523',
-      moment: 'Yo Baka',
-      from: 'Naruto',
-      when: '497',
-      timestamp: '20:09',
-      created: '2020-09-06T05:00:00.000Z',
-      labels: [
-        'irl',
-      ],
-    },
-    {
-      _id: '5f55849eedf2420f61b4dd25dafs',
-      moment: 'Yo Baka',
-      from: 'Naruto',
-      when: '497',
-      timestamp: '20:09',
-      created: '2020-09-06T05:00:00.000Z',
-      labels: [
-        'anime',
-      ],
-    },
-  ]);
-  const [labels, setLabels] = useState<Label[]>([
-    {
-      label: 'Anime',
-      value: 'anime',
-    },
-    {
-      label: 'IRL',
-      value: 'irl',
-    },
-  ]);
-  const [filters, setFilters] = useState({
-    label: '',
-  });
 
-  // useEffect(() => {
-  //   const getMoments = async () => {
-  //     try {
-  //       const { data } = await axios.get(`${process.env.API_URI}/moments`, {
-  //         auth: {
-  //           username: user.username,
-  //           password: user.password,
-  //         },
-  //       });
+  const [loading, setLoading] = useState(false);
 
-  //       setMoments(data.moments);
-  //     } catch (error) {
-  //       // eslint-disable-next-line no-console
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   if (session) {
-  //     getMoments();
-  //   }
-  // }, [session, user]);
+  const [moments, setMoments] = useState<Moment[]>([]);
+  const [momentsBack, setMomentsBack] = useState<Moment[]>([]);
+  const [labels, setLabels] = useState<Label[]>([]);
+  const [filters, setFilters] = useState<Object>({});
 
   useEffect(() => {
-    if (filters.label !== '') {
-      const momentsFiltered = moments.filter(
-        ({ labels: fL }) => fL.some((label) => label === filters.label),
+    setLoading(true);
+
+    const getMoments = async () => {
+      try {
+        const { data } = await axios.get(`${process.env.API_URI}/moments`, {
+          auth: {
+            username: user.username,
+            password: user.password,
+          },
+        });
+
+        setMoments(data.moments);
+        setMomentsBack(data.moments);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      }
+    };
+
+    const getLabels = async () => {
+      try {
+        const { data } = await axios.get(`${process.env.API_URI}/labels`, {
+          auth: {
+            username: user.username,
+            password: user.password,
+          },
+        });
+
+        const newFilters: Object = data.labels.map((label: Label) => ({ [label.value]: false }));
+
+        setLabels(data.labels);
+        setFilters(newFilters);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      }
+    };
+
+    const fetchData = async () => {
+      await getMoments();
+      await getLabels();
+
+      setLoading(false);
+    };
+
+    if (session) {
+      fetchData();
+    }
+  }, [session, user]);
+
+  useEffect(() => {
+    const activeFilters: string[] = Object.keys(filters).map(
+      (key) => (filters[key] === true ? key : null),
+    ).filter((filter) => filter !== null);
+
+    if (activeFilters.length > 0) {
+      const momentsFiltered = momentsBack.filter(
+        ({ labels: fL }) => fL.some((label) => activeFilters.includes(label)),
       );
 
       setMoments(momentsFiltered);
+    } else {
+      setMoments(momentsBack);
     }
   }, [filters]);
 
@@ -111,19 +94,25 @@ const Moments = () => {
     <>
       <Title textAlign="center">Best animated moments</Title>
 
-      <div className={styles.container}>
-        <div className={styles.moments}>
-          <MomentsList moments={moments} />
+      {loading ? (
+        <div className={styles.loadingContainer}>
+          <CircularProgress />
         </div>
+      ) : (
+        <div className={styles.container}>
+          <div className={styles.moments}>
+            <MomentsList moments={moments} />
+          </div>
 
-        <div className={styles.filters}>
-          <Filters
-            labels={labels}
-            activeFilters={filters}
-            setActiveFilters={setFilters}
-          />
+          <div className={styles.filters}>
+            <Filters
+              labels={labels}
+              activeFilters={filters}
+              setActiveFilters={setFilters}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
